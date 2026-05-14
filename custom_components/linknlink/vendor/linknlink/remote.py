@@ -5,7 +5,7 @@ import time
 import threading
 from typing import Tuple
 
-from linknlink.const import DEFAULT_TIMEOUT
+from .const import DEFAULT_TIMEOUT
 
 from . import exceptions as e
 from .device import Device
