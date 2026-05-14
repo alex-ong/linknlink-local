@@ -2,6 +2,12 @@
 import datetime as dt
 import logging
 
+import os
+import sys
+VENDOR_PATH = os.path.join(os.path.dirname(__file__), "vendor")
+if VENDOR_PATH not in sys.path:
+    sys.path.insert(0, VENDOR_PATH)
+
 import linknlink as llk
 
 from homeassistant.const import CONF_HOST

@@ -7,6 +7,12 @@ from functools import partial
 import logging
 from typing import Any
 
+import os
+import sys
+VENDOR_PATH = os.path.join(os.path.dirname(__file__), "vendor")
+if VENDOR_PATH not in sys.path:
+    sys.path.insert(0, VENDOR_PATH)
+
 import linknlink as llk
 from linknlink.exceptions import (
     AuthenticationError,

@@ -11,12 +11,19 @@ from homeassistant.exceptions import ConfigEntryNotReady
 from .const import DOMAIN, get_domains
 from .coordinator import LinknLinkCoordinator
 
-_LOGGER = logging.getLogger(__name__)
+_LOGGER = logging.getLogger("custom_components.linknlink")
+
+
+async def async_setup(hass: HomeAssistant, config: dict) -> bool:
+    """Set up the LinknLink integration (YAML not supported)."""
+    # This integration is config-entry only; nothing to do here.
+    return True
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up a LinknLink device from a config entry."""
     coordinator = LinknLinkCoordinator(hass, entry.data[CONF_MAC])
+
     if not await coordinator.async_setup():
         _LOGGER.error(
             "Unable to setup LinknLink device - config=%s",
@@ -30,10 +37,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     await coordinator.async_config_entry_first_refresh()
 
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = coordinator
-    # Forward entry setup to related domains.
-    await hass.config_entries.async_forward_entry_setups(
-        entry, get_domains(coordinator.api.type)
-    )
+
+    # Forward entry setup to related platforms.
+    domains = get_domains(coordinator.api.type)
+    await hass.config_entries.async_forward_entry_setups(entry, domains)
 
     return True
 
@@ -46,9 +53,11 @@ async def async_update(hass: HomeAssistant, entry: ConfigEntry) -> None:
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
     device: LinknLinkCoordinator = hass.data[DOMAIN][entry.entry_id]
-    unload_ok = await hass.config_entries.async_unload_platforms(
-        entry, get_domains(device.api.type)
-    )
+
+    domains = get_domains(device.api.type)
+    unload_ok = await hass.config_entries.async_unload_platforms(entry, domains)
+
     if unload_ok:
         hass.data[DOMAIN].pop(entry.entry_id)
+
     return unload_ok
