@@ -3,6 +3,7 @@ import struct
 import socket
 import time
 import threading
+from .const import DEFAULT_TIMEOUT
 
 from . import exceptions as e
 from .device import Device

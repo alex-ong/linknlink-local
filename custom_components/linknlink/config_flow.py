@@ -16,11 +16,12 @@ from .vendor.linknlink.exceptions import (
 import voluptuous as vol
 
 from homeassistant import config_entries
-from homeassistant.components import dhcp
+
 from homeassistant.const import CONF_HOST, CONF_MAC, CONF_TIMEOUT, CONF_TYPE
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers import config_validation as cv
 
+from .homeassistant.compat import DhcpServiceInfo
 from .const import DEFAULT_TIMEOUT, DEVICE_TYPES, DOMAIN
 
 _LOGGER = logging.getLogger("custom_components.linknlink")
@@ -53,7 +54,7 @@ class LinknlinkConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             "host": device.host[0],
         }
 
-    async def async_step_dhcp(self, discovery_info: dhcp.DhcpServiceInfo) -> FlowResult:
+    async def async_step_dhcp(self, discovery_info: DhcpServiceInfo) -> FlowResult:
         """Handle dhcp discovery."""
         host = discovery_info.ip
         unique_id = discovery_info.macaddress.lower().replace(":", "")
