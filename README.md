@@ -1,13 +1,16 @@
 ## Notice
 
-We have moved the official repository from the former developer's [repository](https://github.com/xuanxuan000/linknlink-local) to the official [linknlink repository](https://github.com/linknlink/linknlink-local). Please update your bookmarks and use the official repository for the latest updates and issues.
+I have moved the official repository from the former developer's [repository](https://github.com/linknlink/linknlink-local) 
+to the my personal one [personal one](https://github.com/alex-ong/linknlink-local). 
+
+Please update your bookmarks and use the official repository for the latest updates and issues.
 
 ---
 
 The LinknLink Local integration allows you to control and monitor LinknLink universal remotes, smart plugs, power strips, switches and sensors. The following devices are supported:
 
 - Sensors: `ehub`, `eTHS`, `eMotion`
-- Universal Remotes: `eHub`
+- Universal Remotes: `eHub`, `eHome Rf HA`
 
 ## Entities and subdomains
 
@@ -30,11 +33,11 @@ Use `remote.learn_command` to learn IR and RF codes. These codes are grouped by 
 
 | Service data attribute | Optional | Description                              |
 | ---------------------- | -------- | ---------------------------------------- |
-| `entity_id`          | no       | ID of the remote.                        |
-| `device`             | no       | Name of the device to be controlled.     |
-| `command`            | no       | Names of the commands to be learned.     |
-| `command_type`       | yes      | Command type.`ir` (default) or `rf`. |
-| `alternative`        | yes      | Toggle command indicator.                |
+| `entity_id`            | no       | ID of the remote.                        |
+| `device`               | no       | Name of the device to be controlled.     |
+| `command`              | no       | Names of the commands to be learned.     |
+| `command_type`         | yes      | Command type.`ir` (default) or `rf`.     |
+| `alternative`          | yes      | Toggle command indicator.                |
 
 #### Learning IR codes
 
