@@ -8,7 +8,7 @@ _LOGGER = logging.getLogger("custom_components.linknlink")
 from . import exceptions as e
 from .const import DEFAULT_BCAST_ADDR, DEFAULT_PORT, DEFAULT_TIMEOUT
 from .device import Device, scan, ping
-from .remote import ehub, eremote
+from .remote import ehub, ehub_rf_ha, eremote
 from .sensor import motion, eths
 
 SUPPORTED_TYPES = {
@@ -20,6 +20,8 @@ SUPPORTED_TYPES = {
     },
     ehub: {
         0x520B: ("eHub", "LinknLink"),
+    },
+    ehub_rf_ha: {
         0xAC85: ("eHome HA", "LinknLink")
     },
     eremote: {

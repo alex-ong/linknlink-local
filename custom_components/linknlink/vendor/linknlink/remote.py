@@ -3,16 +3,12 @@ import struct
 import socket
 import time
 import threading
-from typing import Tuple
-
-from .const import DEFAULT_TIMEOUT
 
 from . import exceptions as e
 from .device import Device
 from .device import Device
 from.const import PID_DOORSENSOR, PID_HUMITURE, PID_REMOTE
 import json
-import typing as t
 
 class ehub(Device):
     """Controls a LinknLink ehub."""
@@ -55,6 +51,61 @@ class ehub(Device):
         """Return the pirDetected."""
         return self.check_sensors()["pir_detected"]
 
+    # remote function
+    def sweep_frequency(self) -> None:
+        """Sweep frequency."""
+        self._send(0x19)
+
+    def check_frequency(self) -> bool:
+        """Return True if the frequency was identified successfully."""
+        resp = self._send(0x1A)
+        return resp[0] == 1
+
+    def find_rf_packet(self) -> None:
+        """Enter radiofrequency learning mode."""
+        self._send(0x1B)
+
+    def cancel_sweep_frequency(self) -> None:
+        """Cancel sweep frequency."""
+        self._send(0x1E)
+
+    def update(self) -> None:
+        """Update device name and lock status."""
+        resp = self._send(0x1)
+        self.name = resp[0x48:].split(b"\x00")[0].decode()
+        self.is_locked = bool(resp[0x87])
+
+    def send_data(self, data: bytes) -> None:
+        """Send a code to the device."""
+        self._send(0x2, data)
+
+    def enter_learning(self) -> None:
+        """Enter infrared learning mode."""
+        self._send(0x3)
+
+    def check_data(self) -> bytes:
+        """Return the last captured code."""
+        return self._send(0x4)
+
+class ehub_rf_ha(Device):
+    """Controls a LinknLink eHome HA RF remote (without sensors)."""
+
+    TYPE = "EHUB_RF_HA"
+    
+    def _send(self, command: int, data: bytes = b"") -> bytes:
+        """Send a packet to the device."""
+        if 20000 <= self.devtype <= 29999:
+            packet = struct.pack("<HI", len(data) + 4, command) + data
+        else:
+            packet = struct.pack("<I", command) + data
+        resp = self.send_packet(0x6A, packet)
+        e.check_error(resp[0x22:0x24])
+        payload = self.decrypt(resp[0x38:])
+        if 20000 <= self.devtype <= 29999:
+            p_len = struct.unpack("<H", payload[:0x2])[0]
+            return payload[0x6 : p_len + 2]
+        return payload[0x4:]
+    
     # remote function
     def sweep_frequency(self) -> None:
         """Sweep frequency."""
