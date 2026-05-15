@@ -3,7 +3,6 @@ import struct
 import socket
 import time
 import threading
-from .const import DEFAULT_TIMEOUT
 
 from . import exceptions as e
 from .device import Device
@@ -88,10 +87,10 @@ class ehub(Device):
         """Return the last captured code."""
         return self._send(0x4)
 
-class ehub_rf_ha(Device):
+class ehome_rf_ha(Device):
     """Controls a LinknLink eHome HA RF remote (without sensors)."""
 
-    TYPE = "EHUB_RF_HA"
+    TYPE = "EHOME_RF_HA"
     
     def _send(self, command: int, data: bytes = b"") -> bytes:
         """Send a packet to the device."""
