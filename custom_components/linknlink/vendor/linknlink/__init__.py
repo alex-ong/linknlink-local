@@ -37,15 +37,10 @@ def gendevice(
     name: str = "",
     is_locked: bool = False,
 ) -> Device:
-    """Generate a device."""
-    _LOGGER.error("generating devices")
-    _LOGGER.error(len(SUPPORTED_TYPES))
+    """Generate a device."""    
     for dev_cls, products in SUPPORTED_TYPES.items():
         try:
-            _LOGGER.error("dev_type=%s", dev_type)
             model, manufacturer = products[dev_type]
-            _LOGGER.error(model)
-            _LOGGER.error(manufacturer)
         except KeyError:
             continue
         return dev_cls(
@@ -104,7 +99,7 @@ def xdiscover(
     """
     responses = scan(timeout, local_ip_address, discover_ip_address, discover_ip_port)
     for resp in responses:
-        _LOGGER.error(resp)
+        # _LOGGER.error(resp) # this will log out the raw response from the device.
         yield gendevice(*resp)
 
 
