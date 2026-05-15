@@ -4,11 +4,7 @@ from homeassistant.const import Platform
 DOMAIN = "linknlink"
 
 DOMAINS_AND_TYPES = {
-    # Platform.REMOTE: {"EHUB", "EREMOTE"},
-    # Platform.SENSOR: {"EHUB", "ETHS", "EREMOTE"},
-    # Platform.BINARY_SENSOR: {"EHUB", "EMOTION", "EREMOTE"},
-    # Platform.BUTTON: {"EREMOTE"},
-    Platform.REMOTE: {"EHUB", "EREMOTE"},
+    Platform.REMOTE: {"EHUB", "EHOME_RF_HA", "EREMOTE"},
     Platform.SENSOR: {"EHUB", "ETHS"},
     Platform.BINARY_SENSOR: {"EHUB", "EMOTION"},
 }
